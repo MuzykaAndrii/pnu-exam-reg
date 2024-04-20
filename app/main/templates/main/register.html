@@ -1,5 +1,109 @@
 {% extends "layout/base.html" %}
 
+{% block styles %}
+  <style>
+
+  </style>
+{% endblock styles %}
+
 {% block content %}
-  <h1>Hello, world</h1>
+<h1 class="text-center">Реєстрація на екзамен</h1>
+
+
+<form class="mt-5" action="">
+
+  <div class="row">
+    <div class="col-6">
+      <h3 class="text-center">Дані вступника</h3>
+
+      <div class="row">
+        <div class="col-4">
+          <label for="inputEmail4" class="form-label">Прізвище</label>
+          <input type="text" class="form-control" required>
+        </div>
+        <div class="col-4">
+          <label for="inputPassword4" class="form-label">Ім'я</label>
+          <input type="text" class="form-control" required>
+        </div>
+        <div class="col-4">
+          <label for="inputEmail4" class="form-label">По батькові</label>
+          <input type="text" class="form-control" required>
+        </div>
+      </div>
+
+      <div>
+        <label for="inputEmail4" class="form-label">Електронна пошта</label>
+        <input type="email" class="form-control" required>
+      </div>
+
+      <div>
+        <label for="inputEmail4" class="form-label">Номер телефону</label>
+        <input type="phone" class="form-control">
+      </div>
+
+    </div>
+
+    <div class="col-6">
+      <h3 class="text-center">Дані вступу</h3>
+
+      <div class="base">
+        <label class="form-label" for="">База вступу</label>
+        <select class="form-select" aria-label="Документ, на базі якого буде проводитись вступ">
+          <option selected>Молодший бакалавр</option>
+          <option value="1">Бакалавр</option>
+          <option value="2">Магістр</option>
+          <option value="3">Аспірант</option>
+        </select>
+      </div>
+
+      <div class="target">
+        <label class="form-label" for="">Куди вступаєте</label>
+        <select class="form-select" aria-label="Бажаний рівеень здобуття">
+          <option selected>Молодший бакалавр</option>
+          <option value="1">Бакалавр</option>
+          <option value="2">Магістр</option>
+          <option value="3">Аспірант</option>
+        </select>
+      </div>
+
+      <div class="specialities">
+        <label class="form-label" for="">Спеціальність для вступу</label>
+        <select class="form-select" aria-label="">
+          <option value="0">121 Інженерія програмного забезпечення</option>
+          <option value="1">122 Компютерні науки</option>
+          <option value="2">111 Математика</option>
+          <option value="3">013 початкова освіта</option>
+        </select>
+      </div>
+
+    </div>
+  </div>
+  <button class="btn btn-success mt-3" type="submit">Зареєструватись на екзамен</button>
+</form>
+
+<div class="exams row mt-5">
+
+  <div class="card col-3 mx-3">
+    <div class="card-header">
+      Тестування, віддалено
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">Програмування</h5>
+      <p class="card-text">Дата: 12 квітня 2024 Час: 10:30</p>
+      <p class="card-text">Аудиторія: 315 Корпус: Чорновола</p>
+    </div>
+  </div>
+
+  <div class="card col-3 mx-3">
+    <div class="card-header">
+      Письмовий, Очно
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">Англійська мова</h5>
+      <p class="card-text">Дата: 15 квітня 2024 Час: 8:00</p>
+      <p class="card-text">Аудиторія: 322 Корпус: Чорновола</p>
+    </div>
+  </div>
+
+</div>
 {% endblock content %}
