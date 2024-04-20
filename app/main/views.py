@@ -5,8 +5,7 @@ from django.views import View
 
 class ExamRegisterView(View):
     def get(self, request: HttpRequest):
-        # retrieve form
-        pass
+        return render(request, "main/register.html")
 
     def post(self, request: HttpRequest):
         # handle form
