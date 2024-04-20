@@ -14,14 +14,22 @@ class Degree(models.Model):
         null=False,
     )
 
+    def __str__(self) -> str:
+        return f"{self.name}"
+    
+    class Meta:
+        verbose_name = "Науковий ступінь"
+        verbose_name_plural = "Наукові ступені"
+
 
 class StudyingArea(models.Model):
-    code = models.FloatField(
+    code = models.CharField(
+        max_length=30,
         verbose_name="Код спеціальності / ОП"
     )
     name = models.CharField(
         max_length=150,
-        verbose_name="Спеціальність / Освітня програма",
+        verbose_name="Імя",
         null=False,
         blank=False,
     )
@@ -31,6 +39,13 @@ class StudyingArea(models.Model):
         related_name="areas",
         on_delete=models.CASCADE,
     )
+
+    def __str__(self) -> str:
+        return f"{self.code} {self.name} | {self.degree}"
+    
+    class Meta:
+        verbose_name = "Спеціальність / ОП"
+        verbose_name_plural = "Спеціальності / ОП"
 
 
 class ExamForms(models.IntegerChoices):
@@ -57,6 +72,13 @@ class UniversityBuilding(models.Model):
         null=False,
         blank=False,
     )
+
+    def __str__(self) -> str:
+        return f"{self.name} вул. {self.address}"
+    
+    class Meta:
+        verbose_name = "Корпус"
+        verbose_name_plural = "Корпуси університету"
 
 
 class Exam(models.Model):
@@ -89,3 +111,16 @@ class Exam(models.Model):
         null=False,
         blank=False,
     )
+    target = models.ForeignKey(
+        StudyingArea,
+        verbose_name="На спеціальінсть",
+        related_name="exams",
+        on_delete=models.CASCADE,
+    )
+
+    def __str__(self) -> str:
+        return f"{self.target} {self.subject} {self.time}"
+    
+    class Meta:
+        verbose_name = "Екзамен"
+        verbose_name_plural = "Екзамени"
