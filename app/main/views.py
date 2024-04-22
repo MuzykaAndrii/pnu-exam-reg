@@ -12,7 +12,10 @@ from main.serializers import DegreeSerializer
 
 class ExamRegisterView(View):
     def get(self, request: HttpRequest):
-        return render(request, "main/register.html")
+        degrees = Degree.objects.all()
+        serializer = DegreeSerializer(degrees, many=True)
+    
+        return render(request, "main/register.html", context={"data": serializer.data})
 
     def post(self, request: HttpRequest):
         # handle form
