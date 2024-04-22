@@ -48,17 +48,6 @@ class StudyingArea(models.Model):
         verbose_name_plural = "Спеціальності / ОП"
 
 
-class ExamForms(models.IntegerChoices):
-    FACE_TO_FACE = 1, "Очно"
-    REMOTE = 2, "Дистанційно"
-
-
-class ExamTypes(models.IntegerChoices):
-    TESTING = 1, "Тестування"
-    IN_WRITING = 2, "Письмово"
-    ORALLY = 3, "Усно"
-
-
 class UniversityBuilding(models.Model):
     name = models.CharField(
         max_length=150,
@@ -81,14 +70,17 @@ class UniversityBuilding(models.Model):
         verbose_name_plural = "Корпуси університету"
 
 
+class ExamTypes(models.IntegerChoices):
+    SEE = 1, "ЄВІ"
+    PROFESSIONAL_EXAM = 2, "Фаховий іспит"
+
+
 class Exam(models.Model):
     subject = models.CharField(
         max_length=150,
         verbose_name="Предмет",
-    )
-    form = models.PositiveSmallIntegerField(
-        verbose_name="Форма проведення екзамену",
-        choices=ExamForms.choices,
+        null=True,
+        blank=True,
     )
     type = models.PositiveSmallIntegerField(
         verbose_name="Тип екзамену",
@@ -103,8 +95,6 @@ class Exam(models.Model):
     audience = models.CharField(
         max_length=50,
         verbose_name="Номер аудиторії",
-        blank=True,
-        null=True,
     )
     time = models.DateTimeField(
         verbose_name="Дата і час екзамену",
