@@ -1,4 +1,4 @@
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, CharField, DateTimeField
 
 from main.models import Degree, StudyingArea, Exam, UniversityBuilding
 
@@ -14,15 +14,17 @@ class BuildingSerializer(ModelSerializer):
 
 class ExamSerializer(ModelSerializer):
     building = BuildingSerializer()
+    type = CharField(source="get_type_display")
+    time = DateTimeField(format="%d.%m.%Y %H:%M")
 
     class Meta:
         model = Exam
         fields = (
             "subject",
             "type",
-            "building",
             "audience",
             "time",
+            "building",
         )
 
 
@@ -44,6 +46,7 @@ class DegreeSerializer(ModelSerializer):
     class Meta:
         model = Degree
         fields = (
+            "id",
             "name",
             "weight",
             "areas",
