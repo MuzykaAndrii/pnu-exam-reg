@@ -1,18 +1,19 @@
 {% extends "layout/base.html" %}
+{% load static %}
 
-{% block styles %}
-  <style>
-
-  </style>
-{% endblock styles %}
+{% block head-scripts %}
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+{% endblock head-scripts %}
 
 {% block content %}
 <h1 class="text-center">Реєстрація на екзамен</h1>
 
 <div style="display: none;" id="exams-data">{{ data }}</div>
 
-<form class="mt-5" action="">
+<form class="mt-5 exams-form" action="">
+{% verbatim %}
 
+{% endverbatim %}
   <div class="row">
     <div class="col-6">
       <h3 class="text-center">Дані вступника</h3>
@@ -49,62 +50,69 @@
 
       <div class="base">
         <label class="form-label" for="">База вступу</label>
-        <select class="form-select" aria-label="Документ, на базі якого буде проводитись вступ">
-          <option selected>Молодший бакалавр</option>
-          <option value="1">Бакалавр</option>
-          <option value="2">Магістр</option>
-          <option value="3">Аспірант</option>
+        <select class="form-select" aria-label="Документ, на базі якого буде проводитись вступ" v-model="base">
+          <option value="0" selected>Не обрано</option>
+          
+          <option v-for="degree in examsData" v-bind:value="degree">
+            {% verbatim %}
+              {{degree.name}}
+            {% endverbatim %}
+          </option>
         </select>
       </div>
 
-      <div class="target">
+      <div class="target" v-if="isBaseSelected">
         <label class="form-label" for="">Куди вступаєте</label>
-        <select class="form-select" aria-label="Бажаний рівеень здобуття">
-          <option selected>Молодший бакалавр</option>
-          <option value="1">Бакалавр</option>
-          <option value="2">Магістр</option>
-          <option value="3">Аспірант</option>
+        <select class="form-select" aria-label="Бажаний рівеень здобуття" v-model="target">
+          <option value="0">Не обрано</option>
+
+          <option v-for="degree in availableTargets" v-bind:value="degree">
+            {% verbatim %}
+              {{ degree.name }}
+            {% endverbatim %}
+          </option>
         </select>
       </div>
 
-      <div class="specialities">
+      <div class="specialities" v-if="isTargetSelected">
         <label class="form-label" for="">Спеціальність для вступу</label>
-        <select class="form-select" aria-label="">
-          <option value="0">121 Інженерія програмного забезпечення</option>
-          <option value="1">122 Компютерні науки</option>
-          <option value="2">111 Математика</option>
-          <option value="3">013 початкова освіта</option>
+        <select class="form-select" aria-label="" v-model="area">
+          <option value="0">Не обрано</option>
+          
+          <option v-for="speciality in target.areas" v-bind:value="speciality">
+            {% verbatim %}
+              {{ speciality.code }} {{ speciality.name }}
+            {% endverbatim %}
+          </option>
         </select>
       </div>
 
     </div>
   </div>
-  <button class="btn btn-success mt-3" type="submit">Зареєструватись на екзамен</button>
+  <button v-if="isAreaSelected" class="btn btn-success mt-3" type="submit">Зареєструватись на екзамен(и)</button>
+  <div class="exams row mt-5" v-if="isAreaSelected">
+  
+    <div v-for="exam in area.exams" class="card col-3 mx-3">
+      {% verbatim %}
+        
+      <div class="card-header">
+       {{exam.type}}
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">{{ exam.subject }}</h5>
+        <p class="card-text">Дата: {{ exam.time }}</p>
+        <p class="card-text">Аудиторія: {{ exam.audience }} <br/> Корпус: {{ exam.building.name }}, {{ exam.building.address }}</p>
+      </div>
+      {% endverbatim %}
+  
+    </div>
+  
+  </div>
 </form>
 
-<div class="exams row mt-5">
 
-  <div class="card col-3 mx-3">
-    <div class="card-header">
-      Тестування, віддалено
-    </div>
-    <div class="card-body">
-      <h5 class="card-title">Програмування</h5>
-      <p class="card-text">Дата: 12 квітня 2024 Час: 10:30</p>
-      <p class="card-text">Аудиторія: 315 Корпус: Чорновола</p>
-    </div>
-  </div>
-
-  <div class="card col-3 mx-3">
-    <div class="card-header">
-      Письмовий, Очно
-    </div>
-    <div class="card-body">
-      <h5 class="card-title">Англійська мова</h5>
-      <p class="card-text">Дата: 15 квітня 2024 Час: 8:00</p>
-      <p class="card-text">Аудиторія: 322 Корпус: Чорновола</p>
-    </div>
-  </div>
-
-</div>
 {% endblock content %}
+
+{% block scripts %}
+<script src="{% static 'js/register.js' %}"></script>
+{% endblock scripts %}
