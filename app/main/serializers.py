@@ -20,6 +20,7 @@ class ExamSerializer(ModelSerializer):
     class Meta:
         model = Exam
         fields = (
+            "id",
             "subject",
             "type",
             "audience",
@@ -34,6 +35,7 @@ class StudyingAreaSerializer(ModelSerializer):
     class Meta:
         model = StudyingArea
         fields = (
+            "id",
             "code",
             "name",
             "exams",
