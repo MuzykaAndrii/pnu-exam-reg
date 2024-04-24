@@ -6,6 +6,7 @@ import json
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from main.forms import AdmissionForm
 from participants.forms import ParticipantForm
 from main.models import Degree
 from main.serializers import DegreeSerializer
@@ -30,11 +31,13 @@ class ExamRegisterView(View):
 
     def post(self, request: HttpRequest):
         participant_form = ParticipantForm(request.POST)
-
-        print(request.POST)
+        admission_form = AdmissionForm(request.POST)
 
         if participant_form.is_valid():
             print(participant_form.cleaned_data)
+        
+        if admission_form.is_valid():
+            print(admission_form.cleaned_data)
 
 
 

@@ -116,8 +116,7 @@
 
     </div>
   </div>
-  <button v-if="isAreaSelected" class="btn btn-success mt-3" type="submit">Зареєструватись на екзамен(и)</button>
-  <div class="exams row mt-5" v-if="isAreaSelected">
+  <div class="exams row mt-5 justify-content-center" v-if="isAreaSelected">
   
     <div v-for="exam in availableExams" class="card col-3 mx-3">
       {% verbatim %}
@@ -135,6 +134,7 @@
     </div>
   
   </div>
+  <button v-if="isAreaSelected" class="btn btn-success mt-3 d-block mx-auto" type="submit">Зареєструватись на екзамен(и)</button>
 </form>
 
 
