@@ -1,5 +1,6 @@
 {% extends "layout/base.html" %}
 {% load static %}
+{% load widget_tweaks %}
 
 {% block head-scripts %}
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
@@ -11,36 +12,45 @@
 <div style="display: none;" id="exams-data">{{ data }}</div>
 
 <form class="mt-5 exams-form" action="">
-{% verbatim %}
 
-{% endverbatim %}
+  {% csrf_token %}
+
   <div class="row">
     <div class="col-6">
       <h3 class="text-center">Дані вступника</h3>
 
+      {{ participant_form.non_field_errors }}
+
       <div class="row">
         <div class="col-4">
-          <label for="inputEmail4" class="form-label">Прізвище</label>
-          <input type="text" class="form-control" required>
+          <label class="form-label" for="{{ participant_form.lastname.id_for_label }}">{{ participant_form.lastname.label }}</label>
+
+          {{ participant_form.lastname|add_class:"form-control" }}
         </div>
+
         <div class="col-4">
-          <label for="inputPassword4" class="form-label">Ім'я</label>
-          <input type="text" class="form-control" required>
+          <label class="form-label" for="{{ participant_form.firstname.id_for_label }}">{{ participant_form.firstname.label }}</label>
+
+          {{ participant_form.firstname|add_class:"form-control" }}
         </div>
+
         <div class="col-4">
-          <label for="inputEmail4" class="form-label">По батькові</label>
-          <input type="text" class="form-control" required>
+          <label class="form-label" for="{{ participant_form.surname.id_for_label }}">{{ participant_form.surname.label }}</label>
+
+          {{ participant_form.surname|add_class:"form-control" }}
         </div>
       </div>
 
       <div>
-        <label for="inputEmail4" class="form-label">Електронна пошта</label>
-        <input type="email" class="form-control" required>
+        <label class="form-label" for="{{ participant_form.email.id_for_label }}">{{ participant_form.email.label }}</label>
+
+        {{ participant_form.email|add_class:"form-control" }}
       </div>
 
       <div>
-        <label for="inputEmail4" class="form-label">Номер телефону</label>
-        <input type="phone" class="form-control">
+        <label class="form-label" for="{{ participant_form.phone.id_for_label }}">{{ participant_form.phone.label }}</label>
+
+        {{ participant_form.phone|add_class:"form-control" }}
       </div>
 
     </div>
