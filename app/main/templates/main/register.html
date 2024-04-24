@@ -64,12 +64,12 @@
           name="base"
           class="form-select"
           aria-label="Документ, на базі якого буде проводитись вступ"
-          v-model="base_id"
-          v-on:change="target_id = null; area_id = null;"
+          v-model="baseId"
+          v-on:change="targetId = null; areaId = null;"
         >
           <option value="null" selected>Не обрано</option>
           
-          <option v-for="(degree, id) in examsData" v-bind:value="id">
+          <option v-for="degree in examsData" v-bind:value="degree.id">
             {% verbatim %}
               {{degree.name}}
             {% endverbatim %}
@@ -83,12 +83,12 @@
           name="target"
           class="form-select"
           aria-label="Бажаний рівеень здобуття"
-          v-model="target_id"
-          v-on:change="area_id = null;"
+          v-model="targetId"
+          v-on:change="areaId = null;"
         >
           <option value="null">Не обрано</option>
 
-          <option v-for="(degree, id) in availableTargets" v-bind:value="id">
+          <option v-for="degree in availableTargets" v-bind:value="degree.id">
             {% verbatim %}
               {{ degree.name }}
             {% endverbatim %}
@@ -102,11 +102,11 @@
           name="speciality"
           class="form-select"
           aria-label=""
-          v-model="area_id"
+          v-model="areaId"
         >
           <option value="null">Не обрано</option>
           
-          <option v-for="(speciality, id) in examsData[target_id].areas" v-bind:value="id">
+          <option v-for="speciality in availableAreas" v-bind:value="speciality.id">
             {% verbatim %}
               {{ speciality.code }} {{ speciality.name }}
             {% endverbatim %}
@@ -119,7 +119,7 @@
   <button v-if="isAreaSelected" class="btn btn-success mt-3" type="submit">Зареєструватись на екзамен(и)</button>
   <div class="exams row mt-5" v-if="isAreaSelected">
   
-    <div v-for="exam in examsData[target_id].areas[area_id].exams" class="card col-3 mx-3">
+    <div v-for="exam in availableExams" class="card col-3 mx-3">
       {% verbatim %}
         
       <div class="card-header">

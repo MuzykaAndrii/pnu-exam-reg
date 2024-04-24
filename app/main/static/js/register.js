@@ -10,30 +10,39 @@ window.onload = function() {
         el: '.exams-form',
         data: {
             examsData: getExamsData(),
-            base_id: null,
-            target_id: null,
-            area_id: null
+            baseId: null,
+            targetId: null,
+            areaId: null
         },
         computed: {
             isBaseSelected: function() {
-                return this.examsData[this.base_id] !== undefined;
+                return this.examsData.find((deg) => deg.id == this.baseId) !== undefined;
             },
             isTargetSelected: function() {
-                return this.isBaseSelected && this.examsData[this.target_id] !== undefined;
+                return this.isBaseSelected && this.examsData.find((deg) => deg.id == this.targetId) !== undefined;
             },
             isAreaSelected: function() {
-                return this.isTargetSelected && this.examsData[this.target_id].areas[this.area_id] !== undefined;
+                return this.isTargetSelected && this.examsData.find((deg) => deg.id == this.targetId).areas.find((ar) => ar.id == this.areaId) !== undefined;
             },
             availableTargets: function(){
-                available = [];
+                let available = [];
+                let base_weight = this.examsData.find((deg) => deg.id == this.baseId).weight;
 
                 this.examsData.forEach(element => {
-                    if (element.weight <= this.examsData[this.base_id].weight || element.weight == this.examsData[this.base_id].weight + 1) {
+                    if (element.weight <= base_weight || element.weight == base_weight + 1) {
                         available.push(element);
                     }
                 });
 
-                return available
+                return available;
+            },
+
+            availableAreas: function() {
+                return this.examsData.find((deg) => deg.id == this.targetId).areas;
+            },
+
+            availableExams: function() {
+                return this.examsData.find((deg) => deg.id == this.targetId).areas.find((ar) => ar.id == this.areaId).exams;
             }
         }
     })
