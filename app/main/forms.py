@@ -1,4 +1,6 @@
 from django import forms
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext as _
 
 from main.models import Degree, StudyingArea
 
@@ -16,3 +18,23 @@ class AdmissionForm(forms.Form):
         queryset=StudyingArea.objects.all(),
         required=True,
     )
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        base = cleaned_data.get("base")  # type: Degree
+        target = cleaned_data.get("target")  # type: Degree
+        speciality = cleaned_data.get("speciality")  # type: StudyingArea
+
+        if target.weight > base.weight + 1:
+            raise ValidationError(
+                _("You cannot admission to %(target)s having degree %(base)s."),
+                code="invalid",
+                params={"target": target.name, "base": base.name}
+            )
+
+        if speciality.degree_id != target.pk:
+            raise ValidationError(
+                _("Wrong speciality specified."),
+                code="invalid",
+            )
