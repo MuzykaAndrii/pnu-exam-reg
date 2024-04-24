@@ -10,25 +10,25 @@ window.onload = function() {
         el: '.exams-form',
         data: {
             examsData: getExamsData(),
-            base: "0",
-            target: "0",
-            area: "0",
+            base_id: null,
+            target_id: null,
+            area_id: null
         },
         computed: {
             isBaseSelected: function() {
-                return this.base !== "0"
+                return this.examsData[this.base_id] !== undefined;
             },
             isTargetSelected: function() {
-                return this.isBaseSelected && this.target !== "0"
+                return this.isBaseSelected && this.examsData[this.target_id] !== undefined;
             },
             isAreaSelected: function() {
-                return this.isTargetSelected && this.area !== "0"
+                return this.isTargetSelected && this.examsData[this.target_id].areas[this.area_id] !== undefined;
             },
             availableTargets: function(){
                 available = [];
 
                 this.examsData.forEach(element => {
-                    if (element.weight <= this.base.weight || element.weight == this.base.weight + 1) {
+                    if (element.weight <= this.examsData[this.base_id].weight || element.weight == this.examsData[this.base_id].weight + 1) {
                         available.push(element);
                     }
                 });
