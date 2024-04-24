@@ -29,8 +29,13 @@ class ExamRegisterView(View):
         )
 
     def post(self, request: HttpRequest):
-        # handle form
-        pass
+        participant_form = ParticipantForm(request.POST)
+
+        print(request.POST)
+
+        if participant_form.is_valid():
+            print(participant_form.cleaned_data)
+
 
 
 class ExamsEndpoint(APIView):

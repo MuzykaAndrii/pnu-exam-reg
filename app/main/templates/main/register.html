@@ -11,7 +11,7 @@
 
 <div style="display: none;" id="exams-data">{{ data }}</div>
 
-<form class="mt-5 exams-form" action="">
+<form class="mt-5 exams-form" action="{% url 'exams:register' %}" method="POST">
 
   {% csrf_token %}
 
@@ -24,33 +24,33 @@
       <div class="row">
         <div class="col-4">
           <label class="form-label" for="{{ participant_form.lastname.id_for_label }}">{{ participant_form.lastname.label }}</label>
-
           {{ participant_form.lastname|add_class:"form-control" }}
+          <div class="invalid-feedback">{{ participant_form.lastname.errors }}</div>
         </div>
 
         <div class="col-4">
           <label class="form-label" for="{{ participant_form.firstname.id_for_label }}">{{ participant_form.firstname.label }}</label>
-
           {{ participant_form.firstname|add_class:"form-control" }}
+          <div class="invalid-feedback">{{ participant_form.firstname.errors }}</div>
         </div>
 
         <div class="col-4">
           <label class="form-label" for="{{ participant_form.surname.id_for_label }}">{{ participant_form.surname.label }}</label>
-
           {{ participant_form.surname|add_class:"form-control" }}
+          <div class="invalid-feedback">{{ participant_form.surname.errors }}</div>
         </div>
       </div>
 
       <div>
         <label class="form-label" for="{{ participant_form.email.id_for_label }}">{{ participant_form.email.label }}</label>
-
         {{ participant_form.email|add_class:"form-control" }}
+        <div class="invalid-feedback">{{ participant_form.email.errors }}</div>
       </div>
 
       <div>
         <label class="form-label" for="{{ participant_form.phone.id_for_label }}">{{ participant_form.phone.label }}</label>
-
         {{ participant_form.phone|add_class:"form-control" }}
+        <div class="invalid-feedback">{{ participant_form.phone.errors }}</div>
       </div>
 
     </div>
@@ -61,6 +61,7 @@
       <div class="base">
         <label class="form-label" for="">База вступу</label>
         <select
+          name="base"
           class="form-select"
           aria-label="Документ, на базі якого буде проводитись вступ"
           v-model="base_id"
@@ -79,6 +80,7 @@
       <div class="target" v-if="isBaseSelected">
         <label class="form-label" for="">Куди вступаєте</label>
         <select
+          name="target"
           class="form-select"
           aria-label="Бажаний рівеень здобуття"
           v-model="target_id"
@@ -96,7 +98,12 @@
 
       <div class="specialities" v-if="isTargetSelected">
         <label class="form-label" for="">Спеціальність для вступу</label>
-        <select class="form-select" aria-label="" v-model="area_id">
+        <select
+          name="speciality"
+          class="form-select"
+          aria-label=""
+          v-model="area_id"
+        >
           <option value="null">Не обрано</option>
           
           <option v-for="(speciality, id) in examsData[target_id].areas" v-bind:value="id">
