@@ -1,5 +1,7 @@
 from django.db import models
 
+from main.models import StudyingArea
+
 
 class Participant(models.Model):
     firstname = models.CharField(
@@ -30,4 +32,12 @@ class Participant(models.Model):
         max_length=20,
         null=True,
         blank=True,
+    )
+    candidate_for = models.ForeignKey(
+        StudyingArea,
+        on_delete=models.CASCADE,
+        verbose_name="Кандидат на",
+        related_name="participants",
+        blank=True,
+        null=False,
     )
