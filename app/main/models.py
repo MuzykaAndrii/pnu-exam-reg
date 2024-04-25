@@ -1,5 +1,15 @@
 from django.db import models
 from django.utils import timezone
+from django.db.models import Prefetch
+
+
+class WithNonExpiredExams(models.Manager):
+    def get_queryset(self) -> models.QuerySet:
+        queryset = super().get_queryset()
+
+        return queryset.prefetch_related(
+            Prefetch("areas__exams", queryset=Exam.non_expired.all())
+        )
 
 
 class Degree(models.Model):
@@ -14,6 +24,9 @@ class Degree(models.Model):
         blank=False,
         null=False,
     )
+
+    objects = models.Manager()
+    with_non_expired_exams = WithNonExpiredExams()
 
     def __str__(self) -> str:
         return f"{self.name}"
@@ -122,8 +135,8 @@ class Exam(models.Model):
     def is_expired(self):
         return timezone.now() > self.time
 
-    non_expired = NoneExpiredExamsManager()
     objects = models.Manager()
+    non_expired = NoneExpiredExamsManager()
 
     def __str__(self) -> str:
         return f"{self.target} {self.subject} {self.time}"

@@ -15,9 +15,7 @@ from main.serializers import DegreeSerializer
 
 class ExamRegisterView(View):
     def get(self, request: HttpRequest):
-        degrees = Degree.objects.all()
-        serializer = DegreeSerializer(degrees, many=True)
-        data = json.dumps(serializer.data)
+        data = self.get_exams_tree_json()
 
         participant_form = ParticipantForm()
     
@@ -39,13 +37,18 @@ class ExamRegisterView(View):
         
         if admission_form.is_valid():
             print(admission_form.cleaned_data)
+    
+
+    def get_exams_tree_json(self):
+        degrees = Degree.with_non_expired_exams.all()
+        serializer = DegreeSerializer(degrees, many=True)
+        return json.dumps(serializer.data)
 
 
 
 class ExamsEndpoint(APIView):
     def get(self, request: HttpRequest):
-        degrees = Degree.objects.all()
-
+        degrees = Degree.with_non_expired_exams.all()
         serializer = DegreeSerializer(degrees, many=True)
 
         return Response(serializer.data)
