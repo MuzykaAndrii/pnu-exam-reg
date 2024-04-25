@@ -41,3 +41,14 @@ class Participant(models.Model):
         blank=True,
         null=False,
     )
+
+    @property
+    def fullname(self):
+        return f"{self.lastname} {self.firstname} {self.surname}"
+
+    def __str__(self) -> str:
+        return f"{self.fullname} {self.candidate_for}"
+
+    class Meta:
+        verbose_name = "Учасник"
+        verbose_name_plural = "Учасники"
