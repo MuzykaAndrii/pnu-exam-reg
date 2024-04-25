@@ -43,6 +43,7 @@ class ExamRegisterView(View):
         
         if not admission_form.is_valid():
             messages.error(request, admission_form.non_field_errors())
+            messages.error(request, admission_form.errors.as_ul())
             return redirect("exams:register")
         
         participant: Participant = participant_form.save(commit=False)

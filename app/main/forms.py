@@ -21,8 +21,9 @@ class AdmissionForm(forms.Form):
 
     def clean_speciality(self):
         speciality = self.cleaned_data.get('speciality')  # type: StudyingArea
+        exams = speciality.exams.all()
 
-        if all(exam.is_expired for exam in speciality.exams.all()):
+        if not exams or all(exam.is_expired for exam in exams):
             raise ValidationError(
                 _("Exams was expired"),
                 code="invalid",
@@ -32,6 +33,7 @@ class AdmissionForm(forms.Form):
 
     def clean(self):
         cleaned_data = super().clean()
+        if self.errors: return  # not execute clean if any field error present
 
         base = cleaned_data.get("base")  # type: Degree
         target = cleaned_data.get("target")  # type: Degree
