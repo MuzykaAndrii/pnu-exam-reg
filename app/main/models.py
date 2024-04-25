@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 class Degree(models.Model):
@@ -20,6 +21,7 @@ class Degree(models.Model):
     class Meta:
         verbose_name = "Науковий ступінь"
         verbose_name_plural = "Наукові ступені"
+        ordering = ("weight", )
 
 
 class StudyingArea(models.Model):
@@ -75,6 +77,14 @@ class ExamTypes(models.IntegerChoices):
     PROFESSIONAL_EXAM = 2, "Фаховий іспит"
 
 
+class NoneExpiredExamsManager(models.Manager):
+    def get_queryset(self) -> models.QuerySet:
+        current_datetime = timezone.now()
+        queryset = super().get_queryset()
+
+        return queryset.filter(time__gt=current_datetime)
+
+
 class Exam(models.Model):
     subject = models.CharField(
         max_length=150,
@@ -107,6 +117,9 @@ class Exam(models.Model):
         related_name="exams",
         on_delete=models.CASCADE,
     )
+
+    non_expired = NoneExpiredExamsManager()
+    objects = models.Manager()
 
     def __str__(self) -> str:
         return f"{self.target} {self.subject} {self.time}"

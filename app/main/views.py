@@ -1,7 +1,8 @@
+import json
+
 from django.http import HttpRequest
 from django.shortcuts import render
 from django.views import View
-import json
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
