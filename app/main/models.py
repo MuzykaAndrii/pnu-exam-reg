@@ -118,6 +118,10 @@ class Exam(models.Model):
         on_delete=models.CASCADE,
     )
 
+    @property
+    def is_expired(self):
+        return timezone.now() > self.time
+
     non_expired = NoneExpiredExamsManager()
     objects = models.Manager()
 
