@@ -47,7 +47,6 @@ class ExamAdmin(admin.ModelAdmin):
     list_display_links = ('subject', 'target',)
     list_filter = (IsExpiredFilter, 'building', 'target')
     search_fields = ('subject', 'audience')
-    readonly_fields = ('is_expired',)
     date_hierarchy = "time"
 
     def is_expired(self, obj):
